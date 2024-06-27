@@ -1,70 +1,73 @@
-from flask import Flask, render_template, request, redirect, url_for
-
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mysqldb import MySQL
-app = Flask(__name__)
+from dotenv import load_dotenv
+import os
+from flask_login import LoginManager, UserMixin, login_user, current_user
+from flask_login import login_required
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'ministerio_salud'
-mysql = MySQL(app) 
 
-# En esta ruta debemos colocar el login
+# Definición de la clase User
+class User(UserMixin):
+    def __init__(self, id, username, password):
+        self.id = id
+        self.username = username
+        self.password = password
+
+app = Flask(__name__, static_url_path='/static')
+app.secret_key = 'mysecretkey'
+load_dotenv()
+
+app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
+app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
+app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
+app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
+
+mysql = MySQL(app)
+
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.login_message = "Por favor inicia sesión para acceder a esta página."
+
+@login_manager.user_loader
+def load_user(user_id):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT id, username, password FROM admin WHERE id = %s", (user_id,))
+    user = cur.fetchone()
+    cur.close()
+    if user:
+        return User(user[0], user[1], user[2])  # Aquí se usa la clase User definida arriba
+    return None
+
 @app.route('/')
-def inicio():
+def index():
+    return redirect(url_for('login'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # Usando 'with' para asegurar que la conexión se cierre correctamente
+        with mysql.connection.cursor() as cur:
+            cur.execute("SELECT id, username, password FROM admin WHERE username = %s AND password = %s", (username, password))
+            user = cur.fetchone()
+        
+        if user:
+            user_obj = User(user[0], user[1], user[2])
+            login_user(user_obj)
+            flash('Login successful!', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Credenciales Inválidas', 'error')
+    
     return render_template('login.html')
 
-@app.route('/login', methods=['POST'])
-def login():
-    username = request.form['username']
-    password = request.form['password']
-    
-    # Aquí deberías validar el usuario y contraseña con la base de datos
-    if username == 'test' and password == 'test':  # Validación de ejemplo
-        return "Login exitoso"
-    else:
-        return "Usuario o contraseña incorrectos"
 
-# En esta ruta colocamos el formulario para registro
-@app.route('/register')
-def registrar_contacto():
-    return render_template('registro.html')
-
-@app.route('/cargar_datos', methods=['POST'])
-def agragar_datos():
-    if request.method == 'POST':
-        nombre = request.form['nombre']
-        apellido = request.form['apellido']
-        telefono = request.form['telefono']
-        email = request.form['email']
-        direccion = request.form['direccion']
-        
-        print(nombre)
-        print(apellido)
-        print(telefono)
-        print(email)
-        print(direccion)
-        return "Datos recibidos"
-
-# Opcional, colocar los tipos de dengue que hay y mostrarlos
-@app.route('/tipo')
-def tipos_dengue():
-    return "Tipos de dengue"
-
-# Colocar los contagios de los usuarios
-@app.route('/casos')
-def tipos_de_casos():
-    return "Tipos de Casos"
-
-# Para poder editar los contactos agregados
-@app.route('/edit')
-def editar():
-    return "editar"
-
-# Para poder eliminar los contactos agregados
-@app.route('/delete')
-def eliminar():
-    return "eliminar"
+@app.route('/home')
+@login_required
+def home():
+    return render_template('home.html')
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=3000, debug=True)
