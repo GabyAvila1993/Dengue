@@ -1,0 +1,17 @@
+.registro_cuerpo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: aquamarine
+}
+
+.login_cuerpo{
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+    border: 1px;
+    background-color: aquamarine;
+}
