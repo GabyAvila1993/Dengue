@@ -1,0 +1,43 @@
+body{
+    font-family: Arial, sans-serif;
+    background-image: url(https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.tittle{
+    margin-top: 20px; 
+    text-align: center;
+    color: #333;
+}
+
+.formulario_registro {
+    background-color: rgba(137, 43, 226, 0.336);
+    padding: 50px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgb(4, 116, 0);
+    width: 300px;
+}
+
+.logo2{
+    background-image: url(https://seeklogo.com/images/M/municipalidad-de-guaymallen-logo-94A999911C-seeklogo.com.png);
+    background-repeat: no-repeat;
+    width: 500px;
+    height: 150px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-position: center;
+
+}
+
+.btn{
+    background-color: rgba(255, 255, 255, 0.500);
+    width: auto;
+    height: 50px;
+    margin-top: 10px; 
+    color: rgb(0, 0, 0);
+}

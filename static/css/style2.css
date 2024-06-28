@@ -1,0 +1,38 @@
+body{
+    background-color: rgba(127, 255, 212, 0.5);
+    background-image: url(https://images.unsplash.com/photo-1572262086204-3909bfc93ea0?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: rgb(255, 255, 255);
+    font-size: 25px;
+    padding-top: 10px;
+
+}
+
+
+.logo{
+    background-image: url(https://seeklogo.com/images/M/municipalidad-de-guaymallen-logo-94A999911C-seeklogo.com.png);
+    background-repeat: no-repeat;
+    width: 500px;
+    height: 150px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-position: center;
+
+}
+
+.redirection-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: rgb(255, 0, 0);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.redirection-button:hover {
+    background-color: rgb(55, 0, 255);
+}

@@ -9,16 +9,11 @@
 </head>
 
 <body class="login_cuerpo">
-    <h2>Login</h2>
     <article class="login">
         <form action="/login" method="POST">
             <div>
-                <label for="username">Usuario:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div>
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" required>
+                <input type="text" name="usuario" placeholder="Ingrese su usuario">
+                <input type="text" name="password" placeholder="Ingrese su contraseña">
             </div>
             <button type="submit">Ingresar</button>
         </form>

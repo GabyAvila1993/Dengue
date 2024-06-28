@@ -7,17 +7,15 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'ministerio_salud'
-mysql = MySQL(app) 
 
 # En esta ruta debemos colocar el login
 @app.route('/')
 def inicio():
-    return render_template('login.html')
+    return render_template('tipos.html')
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    username = request.form['username']
-    password = request.form['password']
+    return render_template('login.html')
     
     # Aquí deberías validar el usuario y contraseña con la base de datos
     if username == 'test' and password == 'test':  # Validación de ejemplo
@@ -49,7 +47,7 @@ def agragar_datos():
 # Opcional, colocar los tipos de dengue que hay y mostrarlos
 @app.route('/tipo')
 def tipos_dengue():
-    return "Tipos de dengue"
+    return render_template('tipos.html')
 
 # Colocar los contagios de los usuarios
 @app.route('/casos')
@@ -65,6 +63,10 @@ def editar():
 @app.route('/delete')
 def eliminar():
     return "eliminar"
+
+@app.route('/estadisticas')
+def estadisticas():
+    return render_template('estadisticas.html')
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
