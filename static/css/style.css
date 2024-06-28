@@ -1,4 +1,3 @@
-
 .error {
     color: red;
     margin-bottom: 10%;
@@ -7,6 +6,11 @@
 .info {
     color: blue;
     margin-bottom: 10%;
+}
+
+.message {
+    margin-bottom: 10%;
+    color: red;
 }
 
 /* Estilos generales del formulario (mantener los estilos existentes) */

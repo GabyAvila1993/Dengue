@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, get_flashed_messages, make_response
+from flask import Flask, render_template, request, redirect, url_for, flash, make_response, jsonify
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
 import os
@@ -42,17 +42,17 @@ def load_user(user_id):
         return User(user[0], user[1], user[2])
     return None
 
-# Ruta de inicio que redirige al login
+# Ruta de inicio que redirige al home
 @app.route('/')
 def index():
-    return redirect(url_for('login'))
+    return render_template('home.html')
 
 # Ruta de login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # Si el usuario ya está autenticado, redirigir a la página de inicio
+    # Si el usuario ya está autenticado, redirigir a la página de pacientes
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('pacientes'))
     
     # Si se envía un formulario POST
     if request.method == 'POST':
@@ -68,19 +68,23 @@ def login():
         if user:
             user_obj = User(user[0], user[1], user[2])
             login_user(user_obj)
-            return redirect(url_for('home'))
+            return redirect(url_for('pacientes'))
         else:
             flash('Invalid credentials', 'error')
     
     # Renderizar la plantilla de login
     return render_template('login.html')
 
-# Ruta de la página de inicio
-@app.route('/home')
+# Ruta de la página de pacientes
+@app.route('/pacientes')
 @login_required
-def home():
+def pacientes():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM pacientes')
+    data = cur.fetchall()
+    cur.close()
     # Configurar la respuesta para no almacenar en caché
-    response = make_response(render_template('home.html'))
+    response = make_response(render_template('pacientes.html', clientes=data))
     response.headers['Cache-Control'] = 'no-store'
     return response
 
@@ -92,6 +96,155 @@ def logout():
     logout_user()
     flash('You have logged out.', 'info')
     return redirect(url_for('login'))
+
+# Agregar Pacientes
+@app.route('/add_paciente', methods=['GET', 'POST'])
+@login_required
+def add_paciente():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        dni = request.form['dni']
+        direccion = request.form['direccion']
+        barrio = request.form['barrio']
+        telefono = request.form['telefono']
+        genero = request.form['genero']
+        tipo_dengue = request.form['tipo_dengue']
+        
+        # Conexión a la base de datos y ejecución de la consulta
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute("INSERT INTO pacientes (Nombre, DNI, Direccion, Barrio, Telefono, Genero, tipo_Dengue) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+                        (nombre, dni, direccion, barrio, telefono, genero, tipo_dengue))
+            mysql.connection.commit()
+            flash('Paciente agregado correctamente', 'success')
+        except Exception as e:
+            print(f"Error: {e}")
+            mysql.connection.rollback()
+            flash('Error al agregar paciente', 'danger')
+        finally:
+            cur.close()
+        
+        return redirect(url_for('pacientes'))
+    
+    return render_template('agregar.html')
+
+@app.route('/editar_paciente/<int:id>', methods=['GET', 'POST'])
+@login_required
+def editar_paciente(id):
+    cur = mysql.connection.cursor()
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        dni = request.form['dni']
+        direccion = request.form['direccion']
+        barrio = request.form['barrio']
+        telefono = request.form['telefono']
+        genero = request.form['genero']
+        tipo_dengue = request.form['tipo_dengue']
+        
+        # Conexión a la base de datos y ejecución de la consulta
+        try:
+            cur.execute("UPDATE pacientes SET Nombre=%s, DNI=%s, Direccion=%s, Barrio=%s, Telefono=%s, Genero=%s, tipo_Dengue=%s WHERE ID_Paciente=%s", 
+                        (nombre, dni, direccion, barrio, telefono, genero, tipo_dengue, id))
+            mysql.connection.commit()
+            flash('Paciente actualizado correctamente', 'success')
+        except Exception as e:
+            print(f"Error: {e}")
+            mysql.connection.rollback()
+            flash('Error al actualizar paciente', 'danger')
+        finally:
+            cur.close()
+        
+        return redirect(url_for('pacientes'))
+    else:
+        cur.execute('SELECT * FROM pacientes WHERE ID_Paciente = %s', (id,))
+        paciente = cur.fetchone()
+        cur.close()
+        return render_template('editar.html', paciente=paciente)
+    
+
+@app.route('/eliminar_paciente/<int:id>', methods=['POST'])
+def eliminar_paciente(id):
+    # Conexión a la base de datos y ejecución de la consulta
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute("DELETE FROM pacientes WHERE ID_Paciente = %s", (id,))
+        mysql.connection.commit()
+        flash('Paciente eliminado correctamente', 'success')
+    except Exception as e:
+        print(f"Error: {e}")
+        mysql.connection.rollback()
+        flash('Error al eliminar paciente', 'danger')
+    finally:
+        cur.close()
+    
+    return redirect(url_for('pacientes'))
+
+
+@app.route('/datos_casos_por_barrio')
+def datos_casos_por_barrio():
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT Barrio, COUNT(*) as num_casos FROM pacientes GROUP BY Barrio")
+        data = cur.fetchall()
+        cur.close()
+
+        barrios = []
+        num_casos = []
+
+        for row in data:
+            barrios.append(row[0])
+            num_casos.append(row[1])
+
+        return jsonify({"barrios": barrios, "num_casos": num_casos})
+
+    except Exception as e:
+        print(f"Error al obtener datos: {e}")
+        return jsonify({"barrios": [], "num_casos": []})
+    
+
+@app.route('/estadisticas')
+def estadisticas():
+    return render_template('estadisticas.html')
+
+@app.route('/datos_casos_por_tipo_barrio')
+def datos_casos_por_tipo_barrio():
+    try:
+        # Conexión a la base de datos
+        cur = mysql.connection.cursor()
+
+        # Consulta para obtener los datos de casos por barrio y tipo de dengue
+        cur.execute("""
+            SELECT Barrio,
+                   SUM(CASE WHEN tipo_Dengue = 'A' THEN 1 ELSE 0 END) AS num_A,
+                   SUM(CASE WHEN tipo_Dengue = 'B' THEN 1 ELSE 0 END) AS num_B,
+                   SUM(CASE WHEN tipo_Dengue = 'C' THEN 1 ELSE 0 END) AS num_C
+            FROM pacientes
+            GROUP BY Barrio
+        """)
+        data = cur.fetchall()
+
+        # Procesamiento de los datos para prepararlos para el frontend
+        resultados = []
+
+        for row in data:
+            resultados.append({
+                'barrio': row[0],
+                'num_A': row[1],
+                'num_B': row[2],
+                'num_C': row[3]
+            })
+
+        # Cierre de cursor
+        cur.close()
+
+        # Devolución de datos en formato JSON
+        return jsonify(resultados)
+
+    except Exception as e:
+        print(f"Error al obtener datos: {e}")
+        return jsonify([])
+
+
 
 # Ejecutar la aplicación
 if __name__ == '__main__':
