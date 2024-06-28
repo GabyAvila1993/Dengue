@@ -35,7 +35,7 @@ mysql = MySQL(app)
 app.secret_key = 'mysecretkey'
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
-login_manager.login_message = "Please log in to access this page."
+login_manager.login_message = "Por favor inicie sesion para ingresar a la pagina."
 
 #---------------------------------------------------------------------------------------------------------------------------->
 
