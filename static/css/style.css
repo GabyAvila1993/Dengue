@@ -1,8 +1,12 @@
-.error{
+
+.error {
     color: red;
+    margin-bottom: 10%;
 }
-.success{
-    color: green;
+
+.info {
+    color: blue;
+    margin-bottom: 10%;
 }
 
 /* Estilos generales del formulario (mantener los estilos existentes) */

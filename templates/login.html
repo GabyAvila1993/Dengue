@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicia Sesión</title>
+    <title>Log In</title>
     <link rel="stylesheet" href="../static/css/style.css">
 </head>
 
 <body>
     <div class="container">
         <div class="formulario">
-            <h1>Sign In</h1>
+            <h1>Log In</h1>
 
             <!-- Mostrar mensajes flash -->
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -37,7 +37,7 @@
                     <input type="checkbox" id="remember" name="remember">
                     <label for="remember">Remember me</label>
                 </div>
-                <input type="submit" value="Log In">
+                <input type="submit" value="To access">
                 <div class="forgot-password"><a href="#">Forgot your password?</a></div>
             </form>
         </div>
