@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,49 +9,58 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-            background-color: #c0c0c0d9; /* Fondo gris claro */
-            font-family: Arial, sans-serif; /* Fuente para el cuerpo del texto */
+            background-color: #c0c0c0d9;
+            /* Fondo gris claro */
+            font-family: Arial, sans-serif;
+            /* Fuente para el cuerpo del texto */
         }
+
         h1 {
-            font-family: 'Arial Black', sans-serif; /* Cambiar la fuente del título */
+            font-family: 'Arial Black', sans-serif;
+            /* Cambiar la fuente del título */
             text-align: center;
             margin-top: 20px;
         }
+
         .container {
             display: flex;
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 10px;
             padding: 20px;
-            max-width: 1000px; /* Ancho máximo del contenedor */
-            margin: 0 auto; /* Centrar el contenedor */
+            max-width: 1000px;
+            /* Ancho máximo del contenedor */
+            margin: 0 auto;
+            /* Centrar el contenedor */
         }
+
         .chart-container {
             width: 400px;
             height: 400px;
         }
     </style>
 </head>
+
 <body>
     <h1>Estadísticas de Dengue por Barrio</h1>
-    
+
     <div class="container">
         <!-- Gráfico 1: Total de casos por barrio -->
         <div class="chart-container">
             <canvas id="casosPorBarrioChart"></canvas>
         </div>
-        
+
         <!-- Gráfico 2: Casos de Dengue por tipo en El Carmen -->
         <div class="chart-container">
             <canvas id="casosElCarmenChart"></canvas>
         </div>
-        
+
         <!-- Gráfico 3: Casos de Dengue por tipo en La Finca -->
         <div class="chart-container">
             <canvas id="casosLaFincaChart"></canvas>
         </div>
-        
+
         <!-- Gráfico 4: Casos de Dengue por tipo en San Francisco -->
         <div class="chart-container">
             <canvas id="casosSanFranciscoChart"></canvas>
@@ -58,7 +68,7 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Obtener datos de casos por barrio
             fetch('/datos_casos_por_barrio')
                 .then(response => response.json())
@@ -176,5 +186,10 @@
                 });
         });
     </script>
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="window.history.back();"
+            style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; text-align: center; margin-top: 0px;">Volver</button>
+    </div>
 </body>
+
 </html>

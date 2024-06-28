@@ -3,6 +3,7 @@ from flask_mysqldb import MySQL
 from dotenv import load_dotenv
 import os
 from flask_login import LoginManager, UserMixin, login_user, current_user, logout_user, login_required
+#---------------------------------------------------------------------------------------------------------------------------->
 
 # Definición de la clase User
 class User(UserMixin):
@@ -11,10 +12,14 @@ class User(UserMixin):
         self.username = username
         self.password = password
 
+#---------------------------------------------------------------------------------------------------------------------------->
+
 # Crear instancia de Flask
 app = Flask(__name__, static_url_path='/static')
 # Cargar variables de entorno desde un archivo .env
 load_dotenv()
+
+#---------------------------------------------------------------------------------------------------------------------------->
 
 # Configuración de la base de datos
 app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
@@ -25,11 +30,14 @@ app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 # Crear una instancia de MySQL
 mysql = MySQL(app)
 
+#---------------------------------------------------------------------------------------------------------------------------->
 # Configuración de rutas protegidas
 app.secret_key = 'mysecretkey'
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message = "Please log in to access this page."
+
+#---------------------------------------------------------------------------------------------------------------------------->
 
 # Función para cargar el usuario desde la base de datos
 @login_manager.user_loader
@@ -42,10 +50,19 @@ def load_user(user_id):
         return User(user[0], user[1], user[2])
     return None
 
+#---------------------------------------------------------------------------------------------------------------------------->
 # Ruta de inicio que redirige al home
 @app.route('/')
 def index():
     return render_template('home.html')
+
+
+@app.route('/estadisticas')
+def estadisticas():
+    return render_template('estadisticas.html')
+
+
+#---------------------------------------------------------------------------------------------------------------------------->
 
 # Ruta de login
 @app.route('/login', methods=['GET', 'POST'])
@@ -75,6 +92,8 @@ def login():
     # Renderizar la plantilla de login
     return render_template('login.html')
 
+#---------------------------------------------------------------------------------------------------------------------------->
+
 # Ruta de la página de pacientes
 @app.route('/pacientes')
 @login_required
@@ -88,6 +107,8 @@ def pacientes():
     response.headers['Cache-Control'] = 'no-store'
     return response
 
+#---------------------------------------------------------------------------------------------------------------------------->
+
 # Ruta de logout
 @app.route('/logout')
 @login_required
@@ -96,6 +117,8 @@ def logout():
     logout_user()
     flash('You have logged out.', 'info')
     return redirect(url_for('login'))
+
+#---------------------------------------------------------------------------------------------------------------------------->
 
 # Agregar Pacientes
 @app.route('/add_paciente', methods=['GET', 'POST'])
@@ -127,6 +150,8 @@ def add_paciente():
         return redirect(url_for('pacientes'))
     
     return render_template('agregar.html')
+
+#---------------------------------------------------------------------------------------------------------------------------->
 
 @app.route('/editar_paciente/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -161,6 +186,7 @@ def editar_paciente(id):
         cur.close()
         return render_template('editar.html', paciente=paciente)
     
+#---------------------------------------------------------------------------------------------------------------------------->
 
 @app.route('/eliminar_paciente/<int:id>', methods=['POST'])
 def eliminar_paciente(id):
@@ -179,6 +205,7 @@ def eliminar_paciente(id):
     
     return redirect(url_for('pacientes'))
 
+#---------------------------------------------------------------------------------------------------------------------------->
 
 @app.route('/datos_casos_por_barrio')
 def datos_casos_por_barrio():
@@ -200,11 +227,8 @@ def datos_casos_por_barrio():
     except Exception as e:
         print(f"Error al obtener datos: {e}")
         return jsonify({"barrios": [], "num_casos": []})
-    
 
-@app.route('/estadisticas')
-def estadisticas():
-    return render_template('estadisticas.html')
+#---------------------------------------------------------------------------------------------------------------------------->
 
 @app.route('/datos_casos_por_tipo_barrio')
 def datos_casos_por_tipo_barrio():
@@ -244,7 +268,7 @@ def datos_casos_por_tipo_barrio():
         print(f"Error al obtener datos: {e}")
         return jsonify([])
 
-
+#---------------------------------------------------------------------------------------------------------------------------->
 
 # Ejecutar la aplicación
 if __name__ == '__main__':
