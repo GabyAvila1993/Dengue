@@ -5,6 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <script>
+        // Deshabilitar el botón de retroceder del navegador
+        window.onload = function() {
+            if (typeof history.pushState === "function") {
+                history.pushState(null, null, null);
+                window.onpopstate = function() {
+                    history.pushState(null, null, null);
+                };
+            }
+        };
+    </script>
 </head>
 
 <body>
