@@ -1,0 +1,88 @@
+/* Estilos específicos para agregar.html */
+.formulario_agregar {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.formulario_agregar input,
+.formulario_agregar select,
+.formulario_agregar textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.formulario_agregar button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+
+.formulario_agregar button:hover {
+    background-color: #45a049;
+}
+
+/* Estilos específicos para editar.html */
+.formulario_editar {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.formulario_editar input,
+.formulario_editar select,
+.formulario_editar textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.formulario_editar button {
+    background-color: #008CBA;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+
+.formulario_editar button:hover {
+    background-color: #005F6B;
+}
+
+/* Estilos específicos para pacientes.html */
+.lista_pacientes {
+    list-style-type: none;
+    padding: 0;
+}
+
+.lista_pacientes li {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.lista_pacientes li:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}

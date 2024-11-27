@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Pacientes</title>
+    <!-- Enlaces a tus archivos CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style4.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+</head>
+<body>
+    <div class="registro_cuerpo">
+    <div class="login_cuerpo">
+    <div class="container">
+        <h1 class="tittle">Listado de Pacientes</h1>
+        <table class="tabla-pacientes">
+            <thead>
+                <tr>
+                    <th>ID Paciente</th>
+                    <th>Nombre</th>
+                    <th>DNI</th>
+                    <th>Dirección</th>
+                    <th>Barrio</th>
+                    <th>Teléfono</th>
+                    <th>Género</th>
+                    <th>Tipo de Dengue</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for paciente in pacientes %}
+                <tr>
+                    <td>{{ paciente[0] }}</td>  {# ID_Paciente #}
+                    <td>{{ paciente[1] }}</td>  {# Nombre #}
+                    <td>{{ paciente[2] }}</td>  {# DNI #}
+                    <td>{{ paciente[3] }}</td>  {# Dirección #}
+                    <td>{{ paciente[4] }}</td>  {# Barrio #}
+                    <td>{{ paciente[5] }}</td>  {# Teléfono #}
+                    <td>{{ paciente[6] }}</td>  {# Género #}
+                    <td>{{ paciente[7] }}</td>  {# Tipo_Dengue #}
+                    <td>
+                        <a href="{{ url_for('editar_paciente', id=paciente[0]) }}" class="btn">Editar</a>
+                        <form action="{{ url_for('eliminar_paciente', id=paciente[0]) }}" method="post" style="display: inline-block;">
+                            <button type="submit" class="btn">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('add_paciente') }}" class="btn">Agregar Paciente</a>

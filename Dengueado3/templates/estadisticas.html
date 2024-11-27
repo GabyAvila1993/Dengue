@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas de Dengue por Barrio</title>
+    <!-- Incluir Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #c0c0c0d9; /* Fondo gris claro */
+            font-family: Arial, sans-serif; /* Fuente para el cuerpo del texto */
+        }
+        h1 {
+            font-family: 'Arial Black', sans-serif; /* Cambiar la fuente del título */
+            text-align: center;
+            margin-top: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1000px; /* Ancho máximo del contenedor */
+            margin: 0 auto; /* Centrar el contenedor */
+        }
+        .chart-container {
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Estadísticas de Dengue por Barrio</h1>
+    
+    <div class="container">
+        <!-- Gráfico 1: Total de casos por barrio -->
+        <div class="chart-container">
+            <canvas id="casosPorBarrioChart"></canvas>
+        </div>
+        
+        <!-- Gráfico 2: Casos de Dengue por tipo en El Carmen -->
+        <div class="chart-container">
+            <canvas id="casosElCarmenChart"></canvas>
+        </div>
+        
+        <!-- Gráfico 3: Casos de Dengue por tipo en La Finca -->
+        <div class="chart-container">
+            <canvas id="casosLaFincaChart"></canvas>
+        </div>
+        
+        <!-- Gráfico 4: Casos de Dengue por tipo en San Francisco -->
+        <div class="chart-container">
+            <canvas id="casosSanFranciscoChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtener datos de casos por barrio
+            fetch('/datos_casos_por_barrio')
+                .then(response => response.json())
+                .then(data => {
+                    const barrios = data.barrios;
+                    const num_casos = data.num_casos;
+
+                    // Configurar el gráfico de Total de casos por barrio
+                    const ctxCasosPorBarrio = document.getElementById('casosPorBarrioChart').getContext('2d');
+                    new Chart(ctxCasosPorBarrio, {
+                        type: 'bar',
+                        data: {
+                            labels: barrios,
+                            datasets: [{
+                                label: 'Total de Casos por Barrio',
+                                data: num_casos,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+
+            // Obtener datos de casos por tipo de dengue y barrio
+            fetch('/datos_casos_por_tipo_barrio')
+                .then(response => response.json())
+                .then(data => {
+                    // Datos para cada barrio
+                    const elCarmen = data.find(item => item.barrio === "El Carmen");
+                    const laFinca = data.find(item => item.barrio === "La Finca");
+                    const sanFrancisco = data.find(item => item.barrio === "San Francisco");
+
+                    // Configurar gráfico de Casos de Dengue por tipo en El Carmen
+                    const ctxCasosElCarmen = document.getElementById('casosElCarmenChart').getContext('2d');
+                    new Chart(ctxCasosElCarmen, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Caso A', 'Caso B', 'Caso C'],
+                            datasets: [{
+                                label: 'El Carmen',
+                                data: [elCarmen.num_A, elCarmen.num_B, elCarmen.num_C],
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+
+                    // Configurar gráfico de Casos de Dengue por tipo en La Finca
+                    const ctxCasosLaFinca = document.getElementById('casosLaFincaChart').getContext('2d');
+                    new Chart(ctxCasosLaFinca, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Caso A', 'Caso B', 'Caso C'],
+                            datasets: [{
+                                label: 'La Finca',
+                                data: [laFinca.num_A, laFinca.num_B, laFinca.num_C],
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+
+                    // Configurar gráfico de Casos de Dengue por tipo en San Francisco
+                    const ctxCasosSanFrancisco = document.getElementById('casosSanFranciscoChart').getContext('2d');
+                    new Chart(ctxCasosSanFrancisco, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Caso A', 'Caso B', 'Caso C'],
+                            datasets: [{
+                                label: 'San Francisco',
+                                data: [sanFrancisco.num_A, sanFrancisco.num_B, sanFrancisco.num_C],
+                                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                borderColor: 'rgba(153, 102, 255, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        });
+    </script>
+</body>
+</html>

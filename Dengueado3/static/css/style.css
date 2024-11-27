@@ -1,0 +1,133 @@
+.registro_cuerpo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: aquamarine
+}
+
+.login_cuerpo{
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+    border: 1px;
+    background-color: aquamarine;
+}
+.error {
+    color: red;
+    margin-bottom: 10%;
+}
+
+.info {
+    color: blue;
+    margin-bottom: 10%;
+}
+
+/* Estilos generales del formulario (mantener los estilos existentes) */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: rgb(165, 165, 165);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+}
+
+.formulario {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px black;
+    padding: 50px;
+    box-sizing: border-box;
+}
+
+.formulario h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.formulario form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 50px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.input-group label {
+    position: absolute;
+    top: -20px;
+    left: 0px;
+    background: white;
+    padding: 0 5px;
+    font-size: 14px;
+    color: #999;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.remember-me input {
+    margin-right: 10px;
+}
+
+.remember-me label {
+    font-size: 14px;
+    color: #555;
+}
+
+input[type="submit"] {
+    width: 100%;
+    height: 50px;
+    border: none;
+    background: #218FF2;
+    border-radius: 25px;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+    outline: none;
+    margin: 10px 0;
+}
+
+input[type="submit"]:hover {
+    background-color: #1A6FD2;
+    transition: .5s;
+}
+
+.forgot-password {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.forgot-password a {
+    color: blue;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}

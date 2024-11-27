@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Paciente</title>
+</head>
+<body>
+    <h1>Editar Paciente</h1>
+    <form action="{{ url_for('editar_paciente', id=paciente[0]) }}" method="post">
+        <input type="text" name="nombre" placeholder="Nombre" value="{{ paciente[1] }}" required><br><br>
+        <input type="text" name="dni" placeholder="DNI" value="{{ paciente[2] }}" required><br><br>
+        <input type="text" name="direccion" placeholder="Dirección" value="{{ paciente[3] }}" required><br><br>
+        <select name="barrio" required>
+            <option value="El Carmen" {% if paciente['Barrio'] == 'El Carmen' %} selected {% endif %}>El Carmen</option>
+            <option value="San Francisco" {% if paciente['Barrio'] == 'San Francisco' %} selected {% endif %}>San Francisco</option>
+            <option value="La Finca" {% if paciente['Barrio'] == 'La Finca' %} selected {% endif %}>La Finca</option>
+        </select><br><br>
+        <input type="text" name="telefono" placeholder="Teléfono" value="{{ paciente[5] }}" required><br><br>
+        <select name="genero" required>
+            <option value="Masculino" {% if paciente['Genero'] == 'M' %} selected {% endif %}>Masculino</option>
+            <option value="Femenino" {% if paciente['Genero'] == 'F' %} selected {% endif %}>Femenino</option>
+            <option value="Otro" {% if paciente['Genero'] == 'O' %} selected {% endif %}>Otro</option>
+        </select><br><br>
+        <select name="tipo_dengue" required>
+            <option value="A" {% if paciente['tipo_Dengue'] == 'A' %} selected {% endif %}>A</option>
+            <option value="B" {% if paciente['tipo_Dengue'] == 'B' %} selected {% endif %}>B</option>
+            <option value="C" {% if paciente['tipo_Dengue'] == 'C' %} selected {% endif %}>C</option>
+        </select><br><br>
+        <button type="submit">Guardar Cambios</button>
+    </form>
+    <br>
+    <a href="{{ url_for('mostrar_pacientes') }}">Cancelar</a>
+</body>
+</html>
